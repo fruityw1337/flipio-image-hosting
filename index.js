@@ -2,6 +2,8 @@ const express = require('express')
 const multer = require('multer')
 const path = require('path')
 const uuid = require('uuid')
+const cors = require('cors')
+const fs = require('fs');
 
 const app = express()
 const PORT = 5010
@@ -16,10 +18,16 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage: storage})
 
+app.use(cors())
+app.use(express.static('images'));
 app.set('view engine', 'ejs')
 
 app.get("/upload", (req, res) => {
     res.render('uploads')
+})
+
+app.get('/:filename', (req, res) => {
+    res.render(fs.createReadStream('images/' + req.params.filename))
 })
 
 app.post('/api/upload', upload.single('image'), (req, res) => {
