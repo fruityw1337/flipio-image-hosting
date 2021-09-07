@@ -3,7 +3,6 @@ const multer = require('multer')
 const path = require('path')
 const uuid = require('uuid')
 const cors = require('cors')
-const fs = require('fs');
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -27,7 +26,7 @@ app.get("/upload", (req, res) => {
 })
 
 app.get('/:filename', (req, res) => {
-    res.render(fs.createReadStream('images/' + req.params.filename))
+    res.render(require('images/' + req.params.filename))
 })
 
 app.post('/api/upload', upload.single('image'), (req, res) => {
